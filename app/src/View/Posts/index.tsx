@@ -1,9 +1,11 @@
 import {
+  ActivityIndicator,
   FlatList,
   Image,
   RefreshControl,
   SafeAreaView,
   ScrollView,
+  SectionList,
   Switch,
   Text,
   TextInput,
@@ -150,7 +152,7 @@ export default function Posts() {
     return (
       <View style={styles.headingContainer}>
         <Text style={{color: "#fff", fontWeight: "bold", fontSize: 24}}>
-          Posts
+          Períodos
         </Text>
       </View>
     );
@@ -191,7 +193,10 @@ export default function Posts() {
 
   return (
     <SafeAreaView style={styles.wrapper}>
-      <FlatList
+      {/*    <ActivityIndicator /> */}
+
+      {/* <SectionList
+        //horizontal={true}
         refreshControl={
           <RefreshControl
             onRefresh={() => handleRefresh()}
@@ -205,6 +210,51 @@ export default function Posts() {
             //progressBackgroundColor="#fff"
           />
         }
+        //numColumns={2}
+        //columnWrapperStyle={{gap: 4}}
+        ListEmptyComponent={<EmptyState />}
+        ListHeaderComponent={<Header />}
+        style={styles.postsWrapper}
+        ItemSeparatorComponent={() => <Divider />}
+        //stickyHeaderIndices={[0, 3]}
+        keyExtractor={(post) => post.id}
+        renderItem={({item: post}) => <PostComponent post={post} />}
+        initialNumToRender={50}
+        getItemLayout={(_data, index) => ({
+          index,
+          length: 200 + 16,
+          offset: (200 + 16) * index,
+        })}
+        sections={[
+          {
+            title: "Section Title",
+            data: posts,
+          },
+        ]}
+        renderSectionHeader={({section: {title}}) => (
+          <View>
+            <Text>Section Header - {title}</Text>
+          </View>
+        )}
+      /> */}
+
+      <FlatList
+        //horizontal={true}
+        refreshControl={
+          <RefreshControl
+            onRefresh={() => handleRefresh()}
+            refreshing={isRefreshing}
+            //iOS Only
+            tintColor="orange"
+            title="Carregando..."
+            titleColor="purple"
+            //Android Only
+            colors={["#1c7b7b", "#81c460"]}
+            //progressBackgroundColor="#fff"
+          />
+        }
+        //numColumns={2}
+        //columnWrapperStyle={{gap: 4}}
         ListEmptyComponent={<EmptyState />}
         ListHeaderComponent={<Header />}
         style={styles.postsWrapper}

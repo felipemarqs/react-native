@@ -30,7 +30,8 @@ export const styles = StyleSheet.create({
     padding: 16,
     marginVertical: 12,
     borderRadius: 8,
-    height: 200,
+
+    flex: 1,
   },
   postAuthor: {
     fontWeight: "bold",
