@@ -1,6 +1,7 @@
 import {
   FlatList,
   Image,
+  RefreshControl,
   SafeAreaView,
   ScrollView,
   Switch,
@@ -191,8 +192,19 @@ export default function Posts() {
   return (
     <SafeAreaView style={styles.wrapper}>
       <FlatList
-        onRefresh={() => handleRefresh()}
-        refreshing={isRefreshing}
+        refreshControl={
+          <RefreshControl
+            onRefresh={() => handleRefresh()}
+            refreshing={isRefreshing}
+            //iOS Only
+            tintColor="orange"
+            title="Carregando..."
+            titleColor="purple"
+            //Android Only
+            colors={["#1c7b7b", "#81c460"]}
+            //progressBackgroundColor="#fff"
+          />
+        }
         ListEmptyComponent={<EmptyState />}
         ListHeaderComponent={<Header />}
         style={styles.postsWrapper}
