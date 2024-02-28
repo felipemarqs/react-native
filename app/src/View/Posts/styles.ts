@@ -1,4 +1,4 @@
-import { Platform, StyleSheet, StatusBar } from "react-native";
+import {Platform, StyleSheet, StatusBar} from "react-native";
 
 export const styles = StyleSheet.create({
   wrapper: {
@@ -30,6 +30,7 @@ export const styles = StyleSheet.create({
     padding: 16,
     marginVertical: 12,
     borderRadius: 8,
+    height: 200,
   },
   postAuthor: {
     fontWeight: "bold",

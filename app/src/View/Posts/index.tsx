@@ -1,4 +1,5 @@
 import {
+  FlatList,
   Image,
   SafeAreaView,
   ScrollView,
@@ -7,13 +8,13 @@ import {
   TextInput,
   View,
 } from "react-native";
-import { styles } from "./styles";
+import {styles} from "./styles";
 
-import { useEffect, useRef, useState } from "react";
-import { TextArea } from "../../components/TextArea";
-import { Input } from "../../components/Input";
-import { Button } from "../../components/Button";
-import { useNavigate } from "react-router-native";
+import {useEffect, useRef, useState} from "react";
+import {TextArea} from "../../components/TextArea";
+import {Input} from "../../components/Input";
+import {Button} from "../../components/Button";
+import {useNavigate} from "react-router-native";
 
 export default function Posts() {
   const InputPasswordRef = useRef<TextInput | null>(null);
@@ -31,7 +32,7 @@ export default function Posts() {
 
   const posts = [
     {
-      id: 1,
+      id: "1",
       title: "Viagem pelas Montanhas Rochosas",
       content:
         "Acabei de voltar de uma incrível viagem pelas Montanhas Rochosas. As paisagens eram deslumbrantes e as trilhas foram desafiadoras, mas valeu a pena! Recomendo a todos os amantes da natureza.",
@@ -40,7 +41,7 @@ export default function Posts() {
       likes: 120,
     },
     {
-      id: 2,
+      id: "2",
       title: "Novo restaurante vegano na cidade",
       content:
         "Ontem experimentei o novo restaurante vegano que abriu na cidade e fiquei impressionado com a qualidade e sabor dos pratos. O ambiente também é muito agradável. Com certeza voltarei!",
@@ -49,7 +50,7 @@ export default function Posts() {
       likes: 85,
     },
     {
-      id: 3,
+      id: "3",
       title: "Dicas para melhorar sua produtividade",
       content:
         "Quero compartilhar algumas dicas que têm me ajudado a melhorar minha produtividade no trabalho. Espero que possam ser úteis para vocês também!",
@@ -58,7 +59,7 @@ export default function Posts() {
       likes: 64,
     },
     {
-      id: 4,
+      id: "4",
       title: "Receita de bolo de chocolate",
       content:
         "Hoje quero compartilhar com vocês a receita do bolo de chocolate mais delicioso que já fiz. É fácil de fazer e tenho certeza de que todos vão adorar!",
@@ -67,7 +68,7 @@ export default function Posts() {
       likes: 42,
     },
     {
-      id: 5,
+      id: "5",
       title: "Dicas para viajar com um orçamento apertado",
       content:
         "Gostaria de compartilhar algumas dicas que aprendi ao viajar com um orçamento apertado. Com um pouco de planejamento, é possível economizar muito!",
@@ -76,7 +77,7 @@ export default function Posts() {
       likes: 78,
     },
     {
-      id: 6,
+      id: "6",
       title: "Novo filme lançado este fim de semana",
       content:
         "Ontem fui ao cinema assistir ao novo filme que foi lançado este fim de semana e foi incrível! A história é envolvente e os efeitos especiais são impressionantes.",
@@ -85,7 +86,7 @@ export default function Posts() {
       likes: 95,
     },
     {
-      id: 7,
+      id: "7",
       title: "Experiência em um curso online de programação",
       content:
         "Recentemente fiz um curso online de programação e gostaria de compartilhar minha experiência com vocês. Foi uma ótima maneira de aprender novas habilidades!",
@@ -94,7 +95,7 @@ export default function Posts() {
       likes: 57,
     },
     {
-      id: 8,
+      id: "8",
       title: "Dicas para se manter motivado no trabalho",
       content:
         "Às vezes é difícil se manter motivado no trabalho, mas com algumas estratégias simples é possível manter o foco e a energia. Compartilho algumas dicas que têm funcionado para mim.",
@@ -103,7 +104,7 @@ export default function Posts() {
       likes: 88,
     },
     {
-      id: 9,
+      id: "9",
       title: "Rotina de exercícios para iniciantes",
       content:
         "Quero compartilhar uma rotina de exercícios para iniciantes que tenho seguido nas últimas semanas. É importante começar devagar e aumentar a intensidade gradualmente!",
@@ -112,7 +113,7 @@ export default function Posts() {
       likes: 71,
     },
     {
-      id: 10,
+      id: "10",
       title: "Livro do mês: 'O Poder do Hábito'",
       content:
         "Este mês estou lendo 'O Poder do Hábito' e estou gostando muito! O livro explora como os hábitos funcionam e como podemos modificá-los para alcançar nossos objetivos. Recomendo!",
@@ -123,15 +124,91 @@ export default function Posts() {
   ];
   const navigate = useNavigate();
 
-  return (
-    <SafeAreaView style={styles.wrapper}>
+  type PostType = {
+    id: string;
+    title: string;
+    content: string;
+    author: string;
+    date: string;
+    likes: number;
+  };
+
+  const PostComponent = ({post}: {post: PostType}) => {
+    return (
+      <View key={post.id} style={styles.postContainer}>
+        <View style={styles.postTitleContainer}>
+          <Text style={styles.postTitle}>{post.title}</Text>
+        </View>
+        <Text style={styles.postAuthor}>Por: {post.author}</Text>
+        <Text style={styles.postContent}>‣{post.content}</Text>
+      </View>
+    );
+  };
+
+  const Header = () => {
+    return (
       <View style={styles.headingContainer}>
-        <Text style={{ color: "#fff", fontWeight: "bold", fontSize: 24 }}>
+        <Text style={{color: "#fff", fontWeight: "bold", fontSize: 24}}>
           Posts
         </Text>
       </View>
+    );
+  };
 
-      <ScrollView style={styles.postsWrapper}>
+  const EmptyState = () => {
+    return (
+      <View style={styles.headingContainer}>
+        <Text style={{color: "#fff", fontWeight: "bold", fontSize: 24}}>
+          Nenhum Item foi encontrado
+        </Text>
+      </View>
+    );
+  };
+
+  const Divider = () => {
+    return (
+      <View
+        style={{
+          height: 1,
+
+          backgroundColor: "#fff",
+          marginTop: 10,
+          marginBottom: 10,
+        }}
+      />
+    );
+  };
+
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    setIsRefreshing(false);
+    console.log("refresh");
+  };
+
+  return (
+    <SafeAreaView style={styles.wrapper}>
+      <FlatList
+        onRefresh={() => handleRefresh()}
+        refreshing={isRefreshing}
+        ListEmptyComponent={<EmptyState />}
+        ListHeaderComponent={<Header />}
+        style={styles.postsWrapper}
+        data={posts}
+        ItemSeparatorComponent={() => <Divider />}
+        //stickyHeaderIndices={[0, 3]}
+        keyExtractor={(post) => post.id}
+        renderItem={({item: post}) => <PostComponent post={post} />}
+        initialNumToRender={50}
+        getItemLayout={(_data, index) => ({
+          index,
+          length: 200 + 16,
+          offset: (200 + 16) * index,
+        })}
+      />
+      {/* <ScrollView style={styles.postsWrapper}>
         {posts.map((post) => (
           <View key={post.id} style={styles.postContainer}>
             <View style={styles.postTitleContainer}>
@@ -141,7 +218,7 @@ export default function Posts() {
             <Text style={styles.postContent}>‣{post.content}</Text>
           </View>
         ))}
-      </ScrollView>
+      </ScrollView> */}
       <Button onPress={() => navigate("/")}>Voltar</Button>
     </SafeAreaView>
   );
